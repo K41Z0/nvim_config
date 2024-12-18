@@ -14,9 +14,8 @@ A custom Neovim setup using Lua, featuring a collection of plugins and various o
 - [Neovim](https://github.com/neovim/neovim/releases) >= **0.9.0** (needs to be built with **LuaJIT**)
 - [Git](https://git-scm.com/downloads) >= **2.19.0** (for partial clones support)
 - a [Nerd Font](https://www.nerdfonts.com/) (v3.0 or greater)
-- a **C** compiler for `nvim-treesitter`. See [here](https://github.com/nvim-treesitter/nvim-treesitter#requirements)
-- for [fzf-lua](https://github.com/ibhagwan/fzf-lua)
-  - **fzf**: [fzf](https://github.com/junegunn/fzf) **(v0.25.1 or greater)**
+- a [C compiler](https://github.com/nvim-treesitter/nvim-treesitter#requirements) for `nvim-treesitter`.
+- a [fzf](https://github.com/junegunn/fzf) (v0.25.1 or greater)
 - a terminal that supports true color and _undercurl_:
   - [kitty](https://github.com/kovidgoyal/kitty) **_(Linux & MacOS)_**
   - [wezterm](https://github.com/wez/wezterm) **_(Linux, MacOS & Windows)_**

@@ -13,7 +13,7 @@ return {
   -- omnisharp-extended-lsp.nvim
   {
     "Hoffs/omnisharp-extended-lsp.nvim",
-    lazy = false,
+    lazy = true,
   },
 
   -- nvim-treesitter

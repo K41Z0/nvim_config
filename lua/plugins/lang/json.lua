@@ -26,7 +26,8 @@ return {
           -- lazy-load schemastore when needed
           on_new_config = function(new_config)
             new_config.settings.json.schemas = new_config.settings.json.schemas or {}
-            vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
+            local json_schemas = require("schemastore").json.schemas()
+            table_utils.insert(new_config.settings.json.schemas, json_schemas)
           end,
           settings = {
             json = {

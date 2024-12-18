@@ -11,6 +11,7 @@ return {
       root = "README.md",
     })
   end,
+
   {
     "stevearc/conform.nvim",
     optional = true,
@@ -109,6 +110,7 @@ return {
     ft = { "markdown", "norg", "rmd", "org" },
     config = function(_, opts)
       require("render-markdown").setup(opts)
+
       Snacks.toggle({
         name = "Render Markdown",
         get = function()

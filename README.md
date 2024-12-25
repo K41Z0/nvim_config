@@ -45,6 +45,12 @@ A custom Neovim setup using Lua, featuring a collection of plugins and various o
   git clone https://github.com/K41Z0/nvim_config ~/.config/nvim
   ```
 
+- Remove the .git folder, so you can add it to your own repo later
+
+  ```bash
+  rm -rf ~/.config/nvim/.git
+  ```
+
 - Start Neovim!
 
   ```bash
@@ -67,6 +73,12 @@ A custom Neovim setup using Lua, featuring a collection of plugins and various o
 
   ```bash
   git clone https://github.com/K41Z0/nvim_config $env:LOCALAPPDATA\nvim
+  ```
+
+- Remove the .git folder, so you can add it to your own repo later
+
+  ```bash
+  Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
   ```
 
 - Start Neovim!

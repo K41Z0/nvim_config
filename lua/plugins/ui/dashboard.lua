@@ -59,6 +59,12 @@ return {
           { section = "keys", gap = 1, padding = 1 },
           {
             pane = 2,
+            section = "terminal",
+            cmd = "",
+            icon = " ",
+          },
+          {
+            pane = 2,
             icon = " ",
             title = "Recent Files",
             section = "recent_files",
@@ -90,13 +96,7 @@ return {
               {
                 icon = " ",
                 title = "Git Status",
-                cmd = "git --no-pager diff --stat -B -M -C",
-                height = 10,
-              },
-              {
-                icon = " ",
-                title = "Git Last Commits",
-                cmd = "git log -n 5 --oneline",
+                cmd = "git status --short --branch --renames",
                 height = 10,
               },
             }

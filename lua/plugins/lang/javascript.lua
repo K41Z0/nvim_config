@@ -13,7 +13,7 @@ return {
     })
   end,
 
-  -- correctly setup lspconfig
+  -- Correctly setup lspconfig
   {
     "neovim/nvim-lspconfig",
     opts = {
@@ -183,12 +183,13 @@ return {
           end, "vtsls")
           -- copy typescript settings to javascript
           opts.settings.javascript =
-            vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
+              vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
         end,
       },
     },
   },
 
+  -- Correctly setup debugger
   {
     "mfussenegger/nvim-dap",
     optional = true,

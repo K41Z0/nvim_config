@@ -9,6 +9,15 @@ return {
     end,
   },
 
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "bash-language-server",
+      },
+    },
+  },
+
   -- Ensure Bash debugger is installed
   {
     "jay-babu/mason-nvim-dap.nvim",
@@ -21,11 +30,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
-      servers = {
-        bashls = {},
-      },
-      settings = {
-        bashls = {},
+      bashls = {
+        settings = {
+          filetypes = { "sh", "zsh" },
+        },
       },
     },
   },

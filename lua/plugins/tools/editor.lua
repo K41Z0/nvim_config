@@ -36,15 +36,100 @@ return {
     end,
   },
 
-  -- Window with code structure [https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/extras/editor/outline.lua]
-  -- Disable `<leader>cs` keymap so it doesn't conflict with `outline.nvim`
+  -- Flash enhances the built-in search functionality by showing labels at the end of each match, letting you quickly jump to a specific location.
   {
-    "folke/trouble.nvim",
-    optional = true,
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {},
+    -- stylua: ignore
     keys = {
-      { "<leader>cs", false },
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
+
+  -- better diagnostics list and others
+  {
+    "folke/trouble.nvim",
+    cmd = { "Trouble" },
+    opts = {
+      modes = {
+        lsp = {
+          win = { position = "right" },
+        },
+      },
+    },
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>cS", "<cmd>Trouble lsp toggle<cr>", desc = "LSP references/definitions/... (Trouble)" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+      {
+        "[q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").prev({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cprev)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Previous Trouble/Quickfix Item",
+      },
+      {
+        "]q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").next({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Next Trouble/Quickfix Item",
+      },
+    },
+  },
+
+  -- A Neovim plugin to easily create and manage predefined window layouts, bringing a new edge to your workflow.
+  -- https://github.com/folke/edgy.nvim/blob/main/README.md
+  {
+    "folke/edgy.nvim",
+    optional = true,
+    opts = function(_, opts)
+      local edgy_idx = LazyVim.plugin.extra_idx("ui.edgy")
+      local symbols_idx = LazyVim.plugin.extra_idx("editor.outline")
+
+      if edgy_idx and edgy_idx > symbols_idx then
+        LazyVim.warn(
+          "The `edgy.nvim` extra must be **imported** before the `outline.nvim` extra to work properly.",
+          { title = "LazyVim" }
+        )
+      end
+
+      opts.right = opts.right or {}
+
+      table.insert(opts.right, {
+        title = "Outline",
+        ft = "Outline",
+        pinned = true,
+        open = "Outline",
+      })
+    end,
+  },
+
+  -- A sidebar with a tree-like outline of symbols from your code, powered by LSP.
+  -- https://github.com/hedyhli/outline.nvim
   {
     "hedyhli/outline.nvim",
     keys = {
@@ -76,31 +161,6 @@ return {
       end
 
       return opts
-    end,
-  },
-
-  -- edgy integration
-  {
-    "folke/edgy.nvim",
-    optional = true,
-    opts = function(_, opts)
-      local edgy_idx = LazyVim.plugin.extra_idx("ui.edgy")
-      local symbols_idx = LazyVim.plugin.extra_idx("editor.outline")
-
-      if edgy_idx and edgy_idx > symbols_idx then
-        LazyVim.warn(
-          "The `edgy.nvim` extra must be **imported** before the `outline.nvim` extra to work properly.",
-          { title = "LazyVim" }
-        )
-      end
-
-      opts.right = opts.right or {}
-      table.insert(opts.right, {
-        title = "Outline",
-        ft = "Outline",
-        pinned = true,
-        open = "Outline",
-      })
     end,
   },
 
@@ -179,6 +239,44 @@ return {
     },
     config = function(_, opts)
       LazyVim.mini.pairs(opts)
+    end,
+  },
+
+  -- Create annotations with one keybind, and jump your cursor in the inserted annotation
+  -- https://github.com/danymat/neogen
+  {
+    "danymat/neogen",
+    cmd = "Neogen",
+    keys = {
+      {
+        "<leader>cn",
+        function()
+          require("neogen").generate()
+        end,
+        desc = "Generate Annotations (Neogen)",
+      },
+    },
+    opts = function(_, opts)
+      if opts.snippet_engine ~= nil then
+        return
+      end
+
+      local map = {
+        ["LuaSnip"] = "luasnip",
+        ["nvim-snippy"] = "snippy",
+        ["vim-vsnip"] = "vsnip",
+      }
+
+      for plugin, engine in pairs(map) do
+        if LazyVim.has(plugin) then
+          opts.snippet_engine = engine
+          return
+        end
+      end
+
+      if vim.snippet then
+        opts.snippet_engine = "nvim"
+      end
     end,
   },
 }

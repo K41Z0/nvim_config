@@ -29,11 +29,18 @@ return {
     },
   },
 
-  -- Configure LazyVim to load gruvbox
+  {
+    "bluz71/vim-nightfly-colors",
+    name = "nightfly",
+    lazy = false,
+    priority = 1000,
+  },
+
+  -- Enable colorscheme
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
+      colorscheme = "nightfly",
     },
   },
 }

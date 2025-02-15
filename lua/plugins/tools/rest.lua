@@ -1,3 +1,5 @@
+local table = require("utils.table")
+
 vim.filetype.add({
   extension = {
     ["http"] = "http",
@@ -30,10 +32,12 @@ return {
     },
     opts = {},
   },
+
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = { "http", "graphql" },
-    },
+    opts = function(_, opts)
+      table.insert(opts.ensure_installed, { "http", "graphql" })
+    end,
   },
 }
+

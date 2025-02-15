@@ -22,7 +22,9 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "go", "gomod", "gowork", "gosum" } },
+    opts = function(_, opts)
+      table_utils.insert(opts.ensure_installed, { "go", "gomod", "gowork", "gosum" })
+    end,
   },
   {
     "neovim/nvim-lspconfig",
@@ -68,6 +70,7 @@ return {
         },
       },
       setup = {
+        ---@diagnostic disable-next-line: unused-local
         gopls = function(_, opts)
           -- workaround for gopls not supporting semanticTokensProvider
           -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
@@ -77,7 +80,9 @@ return {
               client.server_capabilities.semanticTokensProvider = {
                 full = true,
                 legend = {
+                  ---@diagnostic disable-next-line: need-check-nil
                   tokenTypes = semantic.tokenTypes,
+                  ---@diagnostic disable-next-line: need-check-nil
                   tokenModifiers = semantic.tokenModifiers,
                 },
                 range = true,
